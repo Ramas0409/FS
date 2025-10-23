@@ -1,0 +1,63 @@
+# Example application configuration for Fraud Router
+spring:
+  application:
+    name: fraud-router-example
+
+server:
+  port: 8080
+
+# Fraud Switch Metrics Configuration
+fraud-switch:
+  metrics:
+    enabled: true
+    service-name: fraud-router
+    region: us-ohio-1
+    environment: dev
+    
+    cardinality:
+      enforcement-enabled: true
+      max-labels-per-metric: 1000
+      max-values-per-label: 100
+      check-interval: PT1M
+      action: LOG
+    
+    histogram:
+      buckets:
+        fraud-router: [10, 25, 50, 75, 100, 150, 200]
+    
+    sampling:
+      enabled: false
+    
+    circuit-breaker:
+      enabled: true
+      failure-threshold: 5
+      open-duration: PT5M
+      half-open-duration: PT1M
+
+# Spring Boot Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+      region: ${fraud-switch.metrics.region}
+      environment: ${fraud-switch.metrics.environment}
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.fraudswitch.metrics: DEBUG
+    io.micrometer: INFO

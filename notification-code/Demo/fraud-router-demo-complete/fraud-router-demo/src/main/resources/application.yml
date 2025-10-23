@@ -1,0 +1,82 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: fraud-router
+  
+  # Kafka Configuration (using embedded Kafka for demo)
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+    consumer:
+      group-id: fraud-router-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+# Metrics Library Configuration
+fraud-switch:
+  metrics:
+    service-name: fraud-router
+    region: us-ohio-1
+    enabled: true
+    cardinality:
+      max-unique-labels: 1000
+      enforcement-enabled: true
+      circuit-breaker:
+        failure-threshold: 10
+        reset-timeout-seconds: 300
+    histogram:
+      buckets:
+        request-duration: [0.005, 0.010, 0.025, 0.050, 0.075, 0.100, 0.150, 0.200, 0.300, 0.500, 1.0]
+        routing-duration: [0.001, 0.005, 0.010, 0.025, 0.050, 0.075, 0.100, 0.200]
+        provider-duration: [0.050, 0.100, 0.200, 0.350, 0.500, 1.0, 2.0, 5.0]
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+
+# External Provider URLs (dummy endpoints for demo)
+fraud-providers:
+  ravelin:
+    base-url: https://api.ravelin.com
+    timeout-ms: 300
+    api-key: dummy-ravelin-key
+  signifyd:
+    base-url: https://api.signifyd.com
+    timeout-ms: 350
+    api-key: dummy-signifyd-key
+
+# Kafka Topics
+kafka:
+  topics:
+    fraud-events: fraud.events
+    async-enrichment: async.enrichment.requests
+    pan-tokenization: pan.tokenization.queue
+    fraud-transactions: fs.transactions
+    fraud-declines: fs.declines
+
+logging:
+  level:
+    com.fraudswitch: DEBUG
+    org.springframework.kafka: INFO
+    org.springframework.web: INFO
