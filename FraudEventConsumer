@@ -1,0 +1,57 @@
+package com.wp.fd.fraudrouter.consumer;
+
+import com.wp.fd.fraudrouter.annotation.TrackMetrics;
+import com.wp.fd.metrics.common.KafkaMetrics;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
+
+/**
+ * Example Kafka consumer with automatic metrics.
+ */
+@Component
+@Slf4j
+public class FraudEventConsumer {
+    
+    @Autowired
+    private KafkaMetrics kafkaMetrics;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
+    
+    /**
+     * Consume Kafka messages with automatic metrics
+     */
+    @KafkaListener(topics = "async.events", groupId = "fraud-router-group")
+    @TrackMetrics(operation = "process-async-event")
+    public void consumeAsyncEvent(
+            @Payload String payload,
+            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
+        
+        try {
+            // Parse event
+            FraudEvent event = objectMapper.readValue(payload, FraudEvent.class);
+            
+            // Process event
+            processEvent(event);
+            
+            // Metrics automatically recorded by @TrackMetrics and interceptor
+            log.info("Processed event from topic={}, partition={}", topic, partition);
+            
+        } catch (Exception e) {
+            log.error("Error processing Kafka message", e);
+            // Error metrics automatically recorded by @TrackMetrics
+            throw new RuntimeException("Failed to process event", e);
+        }
+    }
+    
+    private void processEvent(FraudEvent event) {
+        // Processing logic
+    }
+}
