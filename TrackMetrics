@@ -1,0 +1,38 @@
+package com.wp.fd.fraudrouter.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Annotation to automatically track metrics for methods.
+ * 
+ * Usage:
+ * @TrackMetrics(operation = "fraud-check", includeResult = true)
+ * public FraudResponse checkFraud(FraudRequest request) { ... }
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TrackMetrics {
+    
+    /**
+     * Operation name for the metric (e.g., "fraud-check", "validate-card")
+     */
+    String operation() default "";
+    
+    /**
+     * Whether to include method result in metrics (true/false)
+     */
+    boolean includeResult() default false;
+    
+    /**
+     * Custom metric prefix (overrides default)
+     */
+    String metricPrefix() default "";
+    
+    /**
+     * Whether to track errors separately
+     */
+    boolean trackErrors() default true;
+}
