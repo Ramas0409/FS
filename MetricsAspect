@@ -1,0 +1,89 @@
+package com.wp.fd.fraudrouter.aspect;
+
+import com.wp.fd.fraudrouter.annotation.TrackMetrics;
+import com.wp.fd.metrics.common.RequestMetrics;
+import com.wp.fd.metrics.core.MetricLabels;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+
+/**
+ * AOP Aspect that automatically records metrics for methods annotated with @TrackMetrics.
+ * 
+ * This provides automatic instrumentation without manual metric recording in business logic.
+ */
+@Aspect
+@Component
+@Slf4j
+public class MetricsAspect {
+    
+    @Autowired
+    private RequestMetrics requestMetrics;
+    
+    /**
+     * Intercept all methods annotated with @TrackMetrics
+     */
+    @Around("@annotation(com.wp.fd.fraudrouter.annotation.TrackMetrics)")
+    public Object trackMetrics(ProceedingJoinPoint joinPoint) throws Throwable {
+        
+        long startTime = System.currentTimeMillis();
+        
+        // Get method and annotation
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        TrackMetrics annotation = method.getAnnotation(TrackMetrics.class);
+        
+        // Extract operation name
+        String operation = annotation.operation().isEmpty() 
+            ? method.getName() 
+            : annotation.operation();
+        
+        // Extract class name
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        
+        try {
+            // Execute the method
+            Object result = joinPoint.proceed();
+            
+            // Record success metric
+            long duration = System.currentTimeMillis() - startTime;
+            
+            requestMetrics.recordRequest(
+                duration,
+                MetricLabels.Request.OPERATION, operation,
+                "class", className,
+                "status", "success"
+            );
+            
+            log.debug("Recorded success metric for {}.{} - duration: {}ms", 
+                     className, operation, duration);
+            
+            return result;
+            
+        } catch (Exception e) {
+            // Record error metric
+            long duration = System.currentTimeMillis() - startTime;
+            
+            if (annotation.trackErrors()) {
+                requestMetrics.recordError(
+                    duration,
+                    e.getClass().getSimpleName(),
+                    MetricLabels.Request.OPERATION, operation,
+                    "class", className,
+                    "error_message", e.getMessage() != null ? e.getMessage() : "unknown"
+                );
+                
+                log.debug("Recorded error metric for {}.{} - duration: {}ms, error: {}", 
+                         className, operation, duration, e.getClass().getSimpleName());
+            }
+            
+            throw e;
+        }
+    }
+}
