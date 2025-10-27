@@ -1,0 +1,24 @@
+package com.wp.fd.fraudrouter.config;
+
+import com.wp.fd.fraudrouter.interceptor.MetricsInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * Configuration to register metrics interceptors.
+ */
+@Configuration
+public class MetricsConfiguration implements WebMvcConfigurer {
+    
+    @Autowired
+    private MetricsInterceptor metricsInterceptor;
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(metricsInterceptor)
+                .addPathPatterns("/api/**")  // Track all /api/* endpoints
+                .excludePathPatterns("/actuator/**");  // Exclude actuator endpoints
+    }
+}
