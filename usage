@@ -1,0 +1,33 @@
+🎯 13. Usage Summary
+Option 1: Automatic Metrics (Recommended)
+java@PostMapping("/check")
+@TrackMetrics(operation = "fraud-check")  // ← Just add this!
+public FraudResponse checkFraud(@RequestBody FraudRequest request) {
+    return fraudService.evaluateFraud(request);
+}
+Option 2: HTTP Interceptor (Automatic)
+java@GetMapping("/status/{id}")  // ← No annotation needed
+public FraudResponse getStatus(@PathVariable String id) {
+    return fraudService.getStatus(id);  // Metrics automatic!
+}
+Option 3: Manual Control
+java@PostMapping("/validate")
+public FraudResponse validate(@RequestBody FraudRequest request) {
+    long start = System.currentTimeMillis();
+    try {
+        FraudResponse response = fraudService.validate(request);
+        requestMetrics.recordRequest(
+            System.currentTimeMillis() - start,
+            "gateway", request.getGateway(),
+            "decision", response.getDecision()
+        );
+        return response;
+    } catch (Exception e) {
+        requestMetrics.recordError(
+            System.currentTimeMillis() - start,
+            e.getClass().getSimpleName(),
+            "gateway", request.getGateway()
+        );
+        throw e;
+    }
+}
