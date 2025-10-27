@@ -1,0 +1,91 @@
+package com.wp.fd.fraudrouter.controller;
+
+import com.wp.fd.fraudrouter.annotation.TrackMetrics;
+import com.wp.fd.fraudrouter.model.FraudRequest;
+import com.wp.fd.fraudrouter.model.FraudResponse;
+import com.wp.fd.fraudrouter.service.FraudService;
+import com.wp.fd.metrics.common.RequestMetrics;
+import com.wp.fd.metrics.core.MetricLabels;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * Example controller showing different ways to use metrics.
+ */
+@RestController
+@RequestMapping("/api/fraud")
+@Slf4j
+public class FraudController {
+    
+    @Autowired
+    private FraudService fraudService;
+    
+    @Autowired
+    private RequestMetrics requestMetrics;
+    
+    /**
+     * Example 1: Automatic metrics using @TrackMetrics annotation
+     * Metrics are recorded automatically by MetricsAspect
+     */
+    @PostMapping("/check")
+    @TrackMetrics(operation = "fraud-check", trackErrors = true)
+    public FraudResponse checkFraud(@RequestBody FraudRequest request) {
+        // Business logic only - metrics handled by aspect
+        return fraudService.evaluateFraud(request);
+    }
+    
+    /**
+     * Example 2: Automatic HTTP metrics via interceptor
+     * No annotation needed - MetricsInterceptor handles it
+     */
+    @GetMapping("/status/{transactionId}")
+    public FraudResponse getStatus(@PathVariable String transactionId) {
+        // Metrics automatically recorded by interceptor
+        return fraudService.getStatus(transactionId);
+    }
+    
+    /**
+     * Example 3: Manual metrics recording with custom tags
+     * Use when you need fine-grained control
+     */
+    @PostMapping("/validate")
+    public FraudResponse validateTransaction(@RequestBody FraudRequest request) {
+        
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // Extract business context
+            String gateway = request.getGateway();
+            String eventType = request.getEventType();
+            String product = request.getProduct();
+            
+            // Business logic
+            FraudResponse response = fraudService.validate(request);
+            
+            // Record success with custom tags
+            long duration = System.currentTimeMillis() - startTime;
+            requestMetrics.recordRequest(
+                duration,
+                MetricLabels.Request.EVENT_TYPE, eventType,
+                MetricLabels.Request.GATEWAY, gateway,
+                MetricLabels.Request.PRODUCT, product,
+                "decision", response.getDecision(),
+                "score", String.valueOf(response.getRiskScore())
+            );
+            
+            return response;
+            
+        } catch (Exception e) {
+            // Record error with context
+            long duration = System.currentTimeMillis() - startTime;
+            requestMetrics.recordError(
+                duration,
+                e.getClass().getSimpleName(),
+                MetricLabels.Request.EVENT_TYPE, request.getEventType(),
+                MetricLabels.Request.GATEWAY, request.getGateway()
+            );
+            throw e;
+        }
+    }
+}
