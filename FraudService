@@ -1,0 +1,120 @@
+package com.wp.fd.fraudrouter.service;
+
+import com.wp.fd.fraudrouter.annotation.TrackMetrics;
+import com.wp.fd.fraudrouter.model.FraudRequest;
+import com.wp.fd.fraudrouter.model.FraudResponse;
+import com.wp.fd.metrics.common.ComponentMetrics;
+import com.wp.fd.metrics.common.RequestMetrics;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+/**
+ * Example service showing metrics integration.
+ */
+@Service
+@Slf4j
+public class FraudService {
+    
+    @Autowired
+    private RequestMetrics requestMetrics;
+    
+    @Autowired
+    private ComponentMetrics componentMetrics;
+    
+    /**
+     * Automatic metrics via @TrackMetrics
+     */
+    @TrackMetrics(operation = "evaluate-fraud")
+    public FraudResponse evaluateFraud(FraudRequest request) {
+        
+        // Check cache first
+        FraudResponse cached = checkCache(request.getTransactionId());
+        if (cached != null) {
+            componentMetrics.recordCacheHit("fraud-decisions");
+            return cached;
+        }
+        
+        componentMetrics.recordCacheMiss("fraud-decisions");
+        
+        // Business logic
+        double riskScore = calculateRiskScore(request);
+        String decision = riskScore > 0.7 ? "DECLINE" : "ACCEPT";
+        
+        return new FraudResponse(decision, riskScore);
+    }
+    
+    /**
+     * Example: Manual metrics for database operations
+     */
+    @TrackMetrics(operation = "fetch-merchant-data")
+    public MerchantData fetchMerchantData(String merchantId) {
+        
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // Simulate DB call
+            MerchantData data = merchantRepository.findById(merchantId);
+            
+            long duration = System.currentTimeMillis() - startTime;
+            
+            // Record DB metrics
+            componentMetrics.recordDatabaseQuery("merchants", duration);
+            
+            return data;
+            
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            componentMetrics.recordDatabaseError("merchants", duration);
+            throw e;
+        }
+    }
+    
+    /**
+     * Example: External API call with metrics
+     */
+    public RavelinResponse callRavelin(FraudRequest request) {
+        
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // Call external API
+            RavelinResponse response = ravelinClient.checkFraud(request);
+            
+            long duration = System.currentTimeMillis() - startTime;
+            
+            // Record external call metrics
+            requestMetrics.recordRequest(
+                duration,
+                "operation", "ravelin_api_call",
+                "provider", "ravelin",
+                "result", response.getStatus()
+            );
+            
+            return response;
+            
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            
+            requestMetrics.recordError(
+                duration,
+                "RavelinApiError",
+                "operation", "ravelin_api_call",
+                "provider", "ravelin"
+            );
+            
+            throw e;
+        }
+    }
+    
+    private FraudResponse checkCache(String transactionId) {
+        // Cache logic
+        return null;
+    }
+    
+    private double calculateRiskScore(FraudRequest request) {
+        // Risk calculation logic
+        return 0.5;
+    }
+}
