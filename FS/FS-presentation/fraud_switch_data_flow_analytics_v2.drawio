@@ -1,0 +1,373 @@
+<mxfile host="app.diagrams.net" modified="2025-01-27T12:00:00.000Z" agent="5.0" version="22.1.0" etag="draw-id" type="device">
+  <diagram name="Data Flow and Analytics Pipeline" id="data-flow-analytics">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <mxCell id="title" value="Fraud Switch - Data Flow and Analytics Pipeline" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="280" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="Legend" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="50" y="90" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-sync" value="Synchronous Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="120" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-async" value="Asynchronous Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="145" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-data" value="Data at Rest" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="170" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-sync-line" value="" style="endArrow=classic;html=1;strokeWidth=3;strokeColor=#0066CC;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="130" as="sourcePoint" />
+            <mxPoint x="80" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-async-line" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#009900;dashed=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="155" as="sourcePoint" />
+            <mxPoint x="80" y="155" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-data-box" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="50" y="165" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gateway-layer-label" value="Payment Gateways" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#9900CC;" vertex="1" parent="1">
+          <mxGeometry x="40" y="230" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gateway-raft" value="RAFT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="270" width="80" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gateway-vap" value="VAP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="345" width="80" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gateway-express" value="EXPRESS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="420" width="80" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gateway-wpg" value="WPG" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="495" width="80" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ets-service" value="ETS&#xa;(Entry Transaction&#xa;Service)&#xa;&#xa;Ingress &amp;&#xa;Gateway&#xa;Aggregation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="180" y="330" width="140" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gateway-to-ets-1" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.2;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;" edge="1" parent="1" source="gateway-raft" target="ets-service">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="400" as="sourcePoint" />
+            <mxPoint x="250" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="gateway-to-ets-2" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.4;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;" edge="1" parent="1" source="gateway-vap" target="ets-service">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="400" as="sourcePoint" />
+            <mxPoint x="250" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="gateway-to-ets-3" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.6;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;" edge="1" parent="1" source="gateway-express" target="ets-service">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="450" as="sourcePoint" />
+            <mxPoint x="250" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="gateway-to-ets-4" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.8;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;" edge="1" parent="1" source="gateway-wpg" target="ets-service">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="500" as="sourcePoint" />
+            <mxPoint x="250" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="processing-layer-label" value="Fraud Switch Core" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="360" y="230" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="fraud-router" value="Fraud Router&#xa;(60 pods)&#xa;&#xa;Transaction&#xa;Orchestration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="270" width="140" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ets-to-router" value="POST /evaluate" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=10;" edge="1" parent="1" source="ets-service" target="fraud-router">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="400" as="sourcePoint" />
+            <mxPoint x="350" y="350" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="fraudsight-adapter" value="FraudSight&#xa;Adapter&#xa;(30 pods)&#xa;&#xa;Ravelin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="400" width="140" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gp-adapter" value="GuaranteedPayment&#xa;Adapter&#xa;(30 pods)&#xa;&#xa;Signifyd" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="530" width="140" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="router-to-fs" value="Sync Call" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=10;" edge="1" parent="1" source="fraud-router" target="fraudsight-adapter">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="400" as="sourcePoint" />
+            <mxPoint x="350" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="router-to-gp" value="Sync Call" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=10;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="fraud-router" target="gp-adapter">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="400" as="sourcePoint" />
+            <mxPoint x="350" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="450" y="390" />
+              <mxPoint x="340" y="390" />
+              <mxPoint x="340" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="ravelin-provider" value="Ravelin&#xa;(External)&#xa;&#xa;FraudSight&#xa;API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="180" y="400" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="signifyd-provider" value="Signifyd&#xa;(External)&#xa;&#xa;Guaranteed&#xa;Payment API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="180" y="530" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="fs-to-ravelin" value="HTTPS" style="endArrow=classic;startArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="fraudsight-adapter" target="ravelin-provider">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="500" as="sourcePoint" />
+            <mxPoint x="350" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="gp-to-signifyd" value="HTTPS" style="endArrow=classic;startArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#CC6600;fontSize=10;" edge="1" parent="1" source="gp-adapter" target="signifyd-provider">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="600" as="sourcePoint" />
+            <mxPoint x="350" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="kafka-layer-label" value="Event Streaming (MSK)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#009900;" vertex="1" parent="1">
+          <mxGeometry x="580" y="230" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-transactions" value="fs.transactions&#xa;&#xa;All successful&#xa;fraud evaluations&#xa;&#xa;25 partitions&#xa;7-day retention" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="290" width="160" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-declines" value="fs.declines&#xa;&#xa;Declined/Flagged&#xa;transactions&#xa;&#xa;25 partitions&#xa;7-day retention" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="440" width="160" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-async" value="async.events&#xa;&#xa;Async enrichment&#xa;requests&#xa;&#xa;10 partitions&#xa;7-day retention" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="590" width="160" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-ravelin-webhooks" value="ravelin.webhooks&#xa;&#xa;Ravelin callbacks&#xa;(chargebacks,&#xa;decisions)&#xa;&#xa;10 partitions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="180" y="660" width="160" height="110" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ravelin-to-kafka-webhook" value="Webhook&#xa;Consumer" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="ravelin-provider" target="kafka-ravelin-webhooks">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="600" as="sourcePoint" />
+            <mxPoint x="300" y="550" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="fs-to-kafka-txn" value="Publish" style="endArrow=classic;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="fraudsight-adapter" target="kafka-transactions">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="450" as="sourcePoint" />
+            <mxPoint x="350" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fs-to-kafka-decline" value="Publish" style="endArrow=classic;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="fraudsight-adapter" target="kafka-declines">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="500" as="sourcePoint" />
+            <mxPoint x="350" y="450" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gp-to-kafka-txn" value="Publish" style="endArrow=classic;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="gp-adapter" target="kafka-transactions">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="550" as="sourcePoint" />
+            <mxPoint x="350" y="500" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="560" y="558" />
+              <mxPoint x="560" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gp-to-kafka-decline" value="Publish" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="gp-adapter" target="kafka-declines">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="600" as="sourcePoint" />
+            <mxPoint x="350" y="550" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="560" y="580" />
+              <mxPoint x="560" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="router-to-kafka-async" value="Publish" style="endArrow=classic;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="fraud-router" target="kafka-async">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="400" as="sourcePoint" />
+            <mxPoint x="350" y="350" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="560" y="345" />
+              <mxPoint x="560" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="storage-layer-label" value="Storage and Analytics" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#CC6600;" vertex="1" parent="1">
+          <mxGeometry x="830" y="230" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-connect" value="Kafka Connect&#xa;&#xa;S3 Sink Connector&#xa;&#xa;Parquet format&#xa;Hourly batches" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="850" y="310" width="160" height="110" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-to-connect" value="Stream" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="kafka-transactions" target="kafka-connect">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="400" as="sourcePoint" />
+            <mxPoint x="650" y="350" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kafka-decline-to-connect" value="Stream" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="kafka-declines" target="kafka-connect">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="kafka-webhook-to-connect" value="Stream" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="kafka-ravelin-webhooks" target="kafka-connect">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="650" as="sourcePoint" />
+            <mxPoint x="450" y="600" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="380" y="715" />
+              <mxPoint x="380" y="780" />
+              <mxPoint x="820" y="780" />
+              <mxPoint x="820" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="s3-storage" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="290" width="80" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-label" value="S3 Bucket&#xa;&#xa;fs-transactions/&#xa;fs-declines/&#xa;ravelin-webhooks/&#xa;&#xa;Parquet files&#xa;date/hour" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1055" y="400" width="130" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="connect-to-s3" value="Write" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryDz=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="kafka-connect" target="s3-storage">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="400" as="sourcePoint" />
+            <mxPoint x="950" y="350" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="cdp-snowflake" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="290" width="80" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="cdp-label" value="CDP/Snowflake&#xa;&#xa;Analytics DB&#xa;&#xa;BI Dashboards&#xa;ML Training&#xa;Chargeback&#xa;Correlation" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1235" y="400" width="130" height="110" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="s3-to-cdp" value="Load&#xa;(Daily)" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitDz=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryDz=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="s3-storage" target="cdp-snowflake">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1050" y="400" as="sourcePoint" />
+            <mxPoint x="1100" y="350" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="issuer-layer-label" value="Issuer Data-Share" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#CC0000;" vertex="1" parent="1">
+          <mxGeometry x="830" y="520" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="issuer-data-service" value="Issuer Data&#xa;Service&#xa;(8 pods)&#xa;&#xa;Multi-issuer&#xa;fan-out&#xa;Circuit breakers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="850" y="570" width="160" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kafka-to-issuer" value="Subscribe" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="kafka-transactions" target="issuer-data-service">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="600" as="sourcePoint" />
+            <mxPoint x="650" y="550" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="800" y="350" />
+              <mxPoint x="800" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="sftp-capital-one" value="Capital One&#xa;SFTP&#xa;&#xa;CSV files&#xa;Daily delivery" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;verticalAlign=top;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1080" y="550" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="sftp-chase" value="Chase&#xa;SFTP&#xa;&#xa;CSV files&#xa;Daily delivery" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;verticalAlign=top;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1080" y="650" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="issuer-to-capital" value="SFTP Push" style="endArrow=classic;html=1;exitX=1;exitY=0.33;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="issuer-data-service" target="sftp-capital-one">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="870" y="650" as="sourcePoint" />
+            <mxPoint x="920" y="600" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="issuer-to-chase" value="SFTP Push" style="endArrow=classic;html=1;exitX=1;exitY=0.67;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#009900;dashed=1;fontSize=10;" edge="1" parent="1" source="issuer-data-service" target="sftp-chase">
+          <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="870" y="700" as="sourcePoint" />
+            <mxPoint x="920" y="650" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="metrics-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="540" width="290" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-title" value="Key Metrics" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1240" y="550" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-1" value="Total throughput: 1,300 TPS per region" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1245" y="580" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-2" value="Gateway to ETS: &lt;10ms p99" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1245" y="605" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-3" value="Kafka event lag: &lt;2 seconds p95" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1245" y="630" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-4" value="S3 write latency: ~500ms (batch)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1245" y="655" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-5" value="CDP load: Daily at 2 AM UTC" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1245" y="680" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics-6" value="Issuer delivery: 99%+ success rate" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1245" y="705" width="260" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

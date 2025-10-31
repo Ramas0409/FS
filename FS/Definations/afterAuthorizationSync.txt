@@ -1,0 +1,34 @@
+afterAuthorizationSync
+
+If a merchant is subscribed to the post-authorization fraud check service for payment transactions, the payment gateway, upon receiving a transaction request from the merchant terminal, will forward the request directly to the payment network to obtain authorization approval. The network then forwards the request to the issuer for final approval.
+
+Once the payment gateway receives the authorization response from the network — and only in the case of an approval response — it will make a call to the fraud switch to obtain a fraud score and decision. Based on the fraud switch’s response, the payment gateway will make the final decision on whether to approve or decline the transaction.
+
+Mermaid:
+sequenceDiagram
+    participant MS as Merchant Server
+    participant PG as Payment Gateway
+    participant FS as Fraud Switch
+    participant PN as Payment Network
+    participant ISS as Issuer
+
+    MS->>PG: Transaction Request
+    
+    PG->>PN: Authorization Request
+    PN->>ISS: Authorization Request
+    ISS->>PN: Authorization Response
+    PN->>PG: Authorization Response
+    
+    alt Authorization Declined
+        PG->>MS: Decline Response
+    else Authorization Approved
+        Note over PG,FS: Post-Authorization Fraud Check
+        PG->>FS: Fraud Check Request<br/>(get score & decision)
+        FS->>PG: Fraud Decision Response
+        
+        alt Fraud Switch Declines
+            PG->>MS: Decline Response
+        else Fraud Switch Approves
+            PG->>MS: Approval Response
+        end
+    end

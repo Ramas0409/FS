@@ -1,0 +1,37 @@
+beforeAuthorizationSync
+
+If a merchant is subscribed to the pre-authorization fraud check service for payment transactions, the payment gateway, upon receiving a transaction request from the merchant terminal, will send a request to the fraud switch to obtain a fraud score and a decision on whether to approve or decline the transaction.
+
+After receiving the response from the fraud switch:
+
+If the fraud switch declines the transaction, the payment gateway will decline the payment and send a decline response back to the merchant terminal.
+
+If the fraud switch approves the transaction, the payment gateway will forward the request to the payment network to obtain authorization approval. The network then forwards the request to the issuer for final approval.
+
+Upon receiving the authorization response from the network, the payment gateway will make another call to the fraud switch to share the authorization decision from the network. This second call to the fraud switch is referred to as beforeAuthorizationAsync.
+
+Mermaid: 
+
+sequenceDiagram
+    participant MS as Merchant Server
+    participant PG as Payment Gateway
+    participant FS as Fraud Switch
+    participant PN as Payment Network
+    participant ISS as Issuer
+
+    MS->>PG: Transaction Request
+    
+    Note over PG,FS: Pre-Authorization Fraud Check
+    PG->>FS: Fraud Check Request<br/>(get score & decision)
+    FS->>PG: Fraud Decision Response
+    
+    alt Fraud Switch Declines
+        PG->>MS: Decline Response
+    else Fraud Switch Approves
+        PG->>PN: Authorization Request
+        PN->>ISS: Authorization Request
+        ISS->>PN: Authorization Response
+        PN->>PG: Authorization Response
+        
+        PG->>MS: Authorization Response
+    end
