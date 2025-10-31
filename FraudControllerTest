@@ -1,0 +1,59 @@
+package com.wp.fd.fraudrouter.controller;
+
+import com.wp.fd.fraudrouter.test.MetricsTestHelper;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class FraudControllerTest {
+    
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @Autowired
+    private MetricsTestHelper metricsTestHelper;
+    
+    @Test
+    public void testFraudCheckRecordsMetrics() throws Exception {
+        
+        String requestBody = """
+            {
+                "transactionId": "txn-123",
+                "gateway": "RAFT",
+                "eventType": "beforeAuthenticationSync",
+                "product": "fraudsight"
+            }
+            """;
+        
+        // Execute request
+        mockMvc.perform(post("/api/fraud/check")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk());
+        
+        // Verify metrics were recorded
+        double requestCount = metricsTestHelper.getCounterValue(
+            "fraud_switch_fraud_router_requests_total",
+            "operation", "fraud-check"
+        );
+        
+        assertTrue(requestCount > 0, "Request metric should be recorded");
+        
+        // Verify timer was recorded
+        long timerCount = metricsTestHelper.getTimerCount(
+            "fraud_switch_fraud_router_request_duration_ms",
+            "operation", "fraud-check"
+        );
+        
+        assertTrue(timerCount > 0, "Timer metric should be recorded");
+    }
+}

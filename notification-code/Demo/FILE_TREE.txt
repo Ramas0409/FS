@@ -1,0 +1,116 @@
+fraud-router-demo/
+├── pom.xml                                          (6.5 KB) Maven build configuration
+├── README.md                                        (16 KB)  Complete documentation
+├── QUICKSTART.md                                    (6.5 KB) 5-minute quick start
+├── test-demo.sh                                     (4 KB)   Automated test script
+├── test-payload.json                                (350 B)  Sample API payload
+│
+└── src/main/
+    ├── java/com/fraudswitch/fraudrouter/
+    │   │
+    │   ├── FraudRouterApplication.java              (50 lines)  Main Spring Boot app
+    │   │
+    │   ├── controller/
+    │   │   └── FraudRouterController.java           (130 lines) REST endpoints
+    │   │                                                        - POST /api/fraud/check
+    │   │                                                        - POST /api/fraud/check/async
+    │   │                                                        - GET /api/fraud/health
+    │   │
+    │   ├── service/
+    │   │   ├── FraudRoutingService.java             (390 lines) Core business logic
+    │   │   │                                                    ✓ RequestMetrics integration
+    │   │   │                                                    ✓ FraudRouterMetrics integration
+    │   │   │                                                    ✓ Parallel calls (boarding, rules, BIN)
+    │   │   │                                                    ✓ Provider routing logic
+    │   │   │                                                    ✓ Kafka event publishing
+    │   │   │
+    │   │   ├── FraudProviderClient.java             (280 lines) External REST calls
+    │   │   │                                                    ✓ ComponentMetrics integration
+    │   │   │                                                    ✓ Ravelin API (FraudSight)
+    │   │   │                                                    ✓ Signifyd API (GuaranteedPayment)
+    │   │   │                                                    ✓ Circuit breaker pattern
+    │   │   │
+    │   │   └── KafkaProducerService.java            (185 lines) Kafka publishing
+    │   │                                                        ✓ KafkaMetrics integration
+    │   │                                                        ✓ fraud.events topic
+    │   │                                                        ✓ async.enrichment.requests topic
+    │   │                                                        ✓ fs.transactions topic
+    │   │
+    │   └── dto/
+    │       ├── FraudCheckRequest.java               (80 lines)  Request DTO with validation
+    │       ├── FraudCheckResponse.java              (75 lines)  Response DTO
+    │       └── KafkaEvents.java                     (145 lines) Kafka event models
+    │
+    └── resources/
+        └── application.yml                          (95 lines)  Complete configuration
+                                                                 ✓ Metrics library config
+                                                                 ✓ Kafka topics
+                                                                 ✓ Provider URLs
+                                                                 ✓ Actuator endpoints
+
+
+METRICS TRACKED:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. RED METRICS (RequestMetrics)
+   • fraud_switch_fraud_router_requests_total
+   • fraud_switch_fraud_router_responses_total
+   • fraud_switch_fraud_router_request_duration_seconds
+
+2. BUSINESS METRICS (FraudRouterMetrics)
+   • fraud_switch_fraud_router_routing_decisions_total
+   • fraud_switch_fraud_router_fraud_decisions_total
+   • fraud_switch_fraud_router_fraud_score
+   • fraud_switch_fraud_router_provider_calls_total
+   • fraud_switch_fraud_router_provider_call_duration_seconds
+   • fraud_switch_fraud_router_parallel_calls_total
+
+3. KAFKA METRICS (KafkaMetrics)
+   • fraud_switch_fraud_router_kafka_publishes_total
+   • fraud_switch_fraud_router_kafka_publish_duration_seconds
+
+4. EXTERNAL CALL METRICS (ComponentMetrics)
+   • fraud_switch_fraud_router_external_calls_total
+   • fraud_switch_fraud_router_external_call_duration_seconds
+
+
+API ENDPOINTS:
+═══════════════════════════════════════════════════════════════════════════════
+
+POST /api/fraud/check              Synchronous fraud check
+POST /api/fraud/check/async        Asynchronous fraud check
+GET  /api/fraud/health             Health check
+GET  /actuator/prometheus          Prometheus metrics
+GET  /actuator/health              Actuator health
+GET  /actuator/metrics             All available metrics
+
+
+ARCHITECTURE FLOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+Client → REST API → Routing Service → [Parallel: Boarding + Rules + BIN]
+                                    → Provider Client (Ravelin/Signifyd)
+                                    → Business Logic
+                                    → Kafka Publishing (Async)
+                                    → Response
+
+Every step records appropriate metrics:
+✓ Request received → RequestMetrics
+✓ Routing decision → FraudRouterMetrics
+✓ Parallel calls → FraudRouterMetrics
+✓ Provider call → ComponentMetrics + FraudRouterMetrics
+✓ Fraud decision → FraudRouterMetrics
+✓ Kafka publish → KafkaMetrics
+✓ Response sent → RequestMetrics
+
+
+TOTAL CODE:
+═══════════════════════════════════════════════════════════════════════════════
+
+8  Java source files        1,235 lines
+2  Configuration files         101 lines
+3  Documentation files      31 KB total
+1  Test script                4 KB
+1  Sample payload           350 bytes
+──────────────────────────────────────
+12 Files                   ~1,400 total lines

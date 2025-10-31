@@ -1,0 +1,18 @@
+{
+  "transaction_id": "txn_test_001",
+  "merchant_id": "merch_stripe_001",
+  "amount": 99.99,
+  "currency": "USD",
+  "transaction_type": "auth",
+  "card_bin": "424242",
+  "card_last_four": "4242",
+  "payment_method": "stripe",
+  "customer_id": "cust_12345",
+  "customer_email": "customer@example.com",
+  "ip_address": "203.0.113.42",
+  "device_id": "device_abc123",
+  "billing_country": "US",
+  "shipping_country": "US",
+  "async_mode": false,
+  "provider_preference": "Ravelin"
+}

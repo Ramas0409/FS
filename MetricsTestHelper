@@ -1,0 +1,62 @@
+package com.wp.fd.fraudrouter.test;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Helper class for testing metrics in unit/integration tests.
+ */
+@Component
+public class MetricsTestHelper {
+    
+    @Autowired
+    private MeterRegistry meterRegistry;
+    
+    /**
+     * Get counter value for testing
+     */
+    public double getCounterValue(String name, String... tags) {
+        Counter counter = meterRegistry.find(name).tags(tags).counter();
+        return counter != null ? counter.count() : 0.0;
+    }
+    
+    /**
+     * Get timer count for testing
+     */
+    public long getTimerCount(String name, String... tags) {
+        Timer timer = meterRegistry.find(name).tags(tags).timer();
+        return timer != null ? timer.count() : 0;
+    }
+    
+    /**
+     * Get timer mean duration
+     */
+    public double getTimerMean(String name, String... tags) {
+        Timer timer = meterRegistry.find(name).tags(tags).timer();
+        return timer != null ? timer.mean(TimeUnit.MILLISECONDS) : 0.0;
+    }
+    
+    /**
+     * Assert counter incremented
+     */
+    public void assertCounterIncremented(String name, String... tags) {
+        double count = getCounterValue(name, tags);
+        if (count == 0.0) {
+            throw new AssertionError("Counter " + name + " was not incremented");
+        }
+    }
+    
+    /**
+     * Print all metrics (for debugging)
+     */
+    public void printAllMetrics() {
+        meterRegistry.getMeters().forEach(meter -> {
+            System.out.println(meter.getId().getName() + " = " + meter.getId().getTags());
+        });
+    }
+}

@@ -1,0 +1,302 @@
+<mxfile host="app.diagrams.net" modified="2025-01-27T12:00:00.000Z" agent="5.0" version="22.1.0" etag="draw-id" type="device">
+  <diagram name="Observability Architecture" id="observability-architecture">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <mxCell id="title" value="Fraud Switch - Observability and Monitoring Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="900" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="subtitle" value="Comprehensive Monitoring: Logs (ELK) | Metrics (OTel + Prometheus + Grafana) | Traces (Instana) | Alerts (Alertmanager)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#0066CC;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="65" width="1200" height="25" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="280" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="Data Flow Types" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="50" y="120" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-logs" value="Logs Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="150" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-metrics" value="Metrics Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="175" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-traces" value="Traces Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="200" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-alerts" value="Alerts Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="90" y="225" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-logs-line" value="" style="endArrow=classic;html=1;strokeWidth=3;strokeColor=#009900;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="160" as="sourcePoint" />
+            <mxPoint x="80" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-metrics-line" value="" style="endArrow=classic;html=1;strokeWidth=3;strokeColor=#0066CC;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="185" as="sourcePoint" />
+            <mxPoint x="80" y="185" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-traces-line" value="" style="endArrow=classic;html=1;strokeWidth=3;strokeColor=#9900CC;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="210" as="sourcePoint" />
+            <mxPoint x="80" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-alerts-line" value="" style="endArrow=classic;html=1;strokeWidth=3;strokeColor=#CC0000;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="235" as="sourcePoint" />
+            <mxPoint x="80" y="235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="services-layer-label" value="MICROSERVICES LAYER (EKS)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="360" y="110" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="metrics-library" value="fraud-switch-metrics&#xa;-spring-boot-starter&#xa;&#xa;Centralized Metrics Library&#xa;&#xa;RED Metrics:&#xa;• Requests&#xa;• Errors&#xa;• Duration&#xa;&#xa;Custom Metrics:&#xa;• Provider calls&#xa;• DEK rotation&#xa;• Kafka lag" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="360" y="150" width="180" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fraud-router-svc" value="Fraud Router&#xa;(60 pods)&#xa;&#xa;Integrated:&#xa;• Metrics lib&#xa;• Instana agent&#xa;• Filebeat&#xa;• OTel SDK" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="580" y="150" width="140" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fraudsight-adapter-svc" value="FraudSight&#xa;Adapter&#xa;(30 pods)&#xa;&#xa;Integrated:&#xa;• Metrics lib&#xa;• Instana agent&#xa;• Filebeat&#xa;• OTel SDK" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="750" y="150" width="140" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="other-services" value="Rules, BIN, GP Adapter,&#xa;Tokenization, Issuer Data&#xa;&#xa;All services integrate:&#xa;• Metrics lib&#xa;• Instana agent&#xa;• Filebeat&#xa;• OTel SDK" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="920" y="150" width="180" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="metrics-endpoint" value="/metrics&#xa;endpoint&#xa;(Prometheus&#xa;format)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="290" width="70" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="metrics-endpoint2" value="/metrics&#xa;endpoint&#xa;(Prometheus&#xa;format)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="290" width="70" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="metrics-endpoint3" value="/metrics&#xa;endpoint&#xa;(Prometheus&#xa;format)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="290" width="70" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lib-to-router" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#CC6600;dashed=1;fontSize=9;" edge="1" parent="1" source="metrics-library" target="fraud-router-svc">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="300" as="sourcePoint" />
+            <mxPoint x="650" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="lib-to-fs" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#CC6600;dashed=1;fontSize=9;" edge="1" parent="1" source="metrics-library" target="fraudsight-adapter-svc">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="300" as="sourcePoint" />
+            <mxPoint x="650" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="lib-to-others" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#CC6600;dashed=1;fontSize=9;" edge="1" parent="1" source="metrics-library" target="other-services">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="300" as="sourcePoint" />
+            <mxPoint x="650" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="otel-daemonset-label" value="OPENTELEMETRY COLLECTION LAYER" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="360" y="370" width="500" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="otel-daemonset" value="OpenTelemetry Collector&#xa;(DaemonSet - one per node)&#xa;&#xa;Receives:&#xa;• Metrics from /metrics endpoints&#xa;• Logs from stdout/stderr (future)&#xa;&#xa;Processors:&#xa;• Batch processor&#xa;• Memory limiter&#xa;• Resource detection&#xa;&#xa;Exporters:&#xa;• Prometheus (metrics)&#xa;• Future: Log aggregator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;align=left;" vertex="1" parent="1">
+          <mxGeometry x="480" y="410" width="300" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="metrics-to-otel1" value="Scrape" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=9;" edge="1" parent="1" source="metrics-endpoint" target="otel-daemonset">
+          <mxGeometry x="-0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="metrics-to-otel2" value="Scrape" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=9;" edge="1" parent="1" source="metrics-endpoint2" target="otel-daemonset">
+          <mxGeometry x="-0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="metrics-to-otel3" value="Scrape" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=9;" edge="1" parent="1" source="metrics-endpoint3" target="otel-daemonset">
+          <mxGeometry x="-0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="logs-layer-label" value="LOGS PIPELINE (Current: Direct to ELK | Future: stdout/stderr)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#009900;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="280" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="filebeat" value="Filebeat&#xa;(Sidecar)&#xa;&#xa;Current: Tails logs&#xa;from application&#xa;&#xa;Future: Collect from&#xa;stdout/stderr" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="80" y="350" width="160" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="logs-to-filebeat" value="Current:&#xa;Direct write" style="endArrow=classic;html=1;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#009900;fontSize=9;" edge="1" parent="1" source="fraud-router-svc" target="filebeat">
+          <mxGeometry x="0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="450" as="sourcePoint" />
+            <mxPoint x="450" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="elasticsearch" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="100" y="520" width="80" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="elasticsearch-label" value="Elasticsearch&#xa;&#xa;Centralized&#xa;log storage&#xa;&#xa;All regions" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="85" y="630" width="110" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="kibana" value="Kibana&#xa;&#xa;Log analysis&#xa;Search and viz&#xa;&#xa;Dashboards" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="80" y="750" width="120" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="filebeat-to-es" value="Ship logs" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryDz=0;strokeWidth=3;strokeColor=#009900;fontSize=9;" edge="1" parent="1" source="filebeat" target="elasticsearch">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="600" as="sourcePoint" />
+            <mxPoint x="250" y="550" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="es-to-kibana" value="Query" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitDz=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#009900;fontSize=9;" edge="1" parent="1" source="elasticsearch" target="kibana">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="700" as="sourcePoint" />
+            <mxPoint x="250" y="650" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="traces-layer-label" value="DISTRIBUTED TRACING (Instana)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#9900CC;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="110" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="instana-agent" value="Instana Agent&#xa;(DaemonSet)&#xa;&#xa;Auto-discovery&#xa;&#xa;Captures:&#xa;• HTTP calls&#xa;• Database queries&#xa;• Kafka events&#xa;• Service mesh" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="150" width="150" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="traces-to-instana" value="Auto&#xa;instrument" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#9900CC;fontSize=9;" edge="1" parent="1" source="other-services" target="instana-agent">
+          <mxGeometry x="0.2" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1100" y="300" as="sourcePoint" />
+            <mxPoint x="1150" y="250" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="instana-backend" value="Instana Backend&#xa;(Global SaaS)&#xa;&#xa;• Real-time APM&#xa;• Service maps&#xa;• Call traces&#xa;• Performance analytics&#xa;• Anomaly detection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="150" width="180" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="instana-agent-to-backend" value="Stream&#xa;traces" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#9900CC;fontSize=9;" edge="1" parent="1" source="instana-agent" target="instana-backend">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1350" y="300" as="sourcePoint" />
+            <mxPoint x="1400" y="250" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="metrics-storage-label" value="METRICS STORAGE AND VISUALIZATION" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="850" y="410" width="500" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="prometheus" value="Prometheus&#xa;(Per-region)&#xa;&#xa;• Scrapes OTel Collector&#xa;• Time-series storage&#xa;• PromQL queries&#xa;• 15-day retention&#xa;&#xa;Configured:&#xa;• Service discovery&#xa;• Scrape configs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;align=left;" vertex="1" parent="1">
+          <mxGeometry x="850" y="450" width="200" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="otel-to-prometheus" value="Export&#xa;metrics" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=9;" edge="1" parent="1" source="otel-daemonset" target="prometheus">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="550" as="sourcePoint" />
+            <mxPoint x="850" y="500" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="grafana-cloud" value="Grafana Cloud&#xa;(Global)&#xa;&#xa;Dashboards:&#xa;• RED Metrics&#xa;  - Requests/sec&#xa;  - Error rate&#xa;  - Duration (p50/p95/p99)&#xa;• Provider Performance&#xa;• DEK Rotation&#xa;• Kafka Consumer Lag&#xa;• Service Health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="450" width="220" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="prometheus-to-grafana" value="Query&#xa;(PromQL)" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#0066CC;fontSize=9;" edge="1" parent="1" source="prometheus" target="grafana-cloud">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1050" y="600" as="sourcePoint" />
+            <mxPoint x="1100" y="550" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="alerting-layer-label" value="ALERTING PIPELINE" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#CC0000;" vertex="1" parent="1">
+          <mxGeometry x="850" y="650" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="alertmanager" value="Prometheus Alertmanager&#xa;&#xa;Alert Rules:&#xa;• HighTransactionFailureRate&#xa;• FraudSightLatencyP99Breach&#xa;• GuaranteedPaymentLatencyBreach&#xa;• ProviderCompletelyDown&#xa;• KafkaConsumerLagCritical&#xa;• ElevatedErrorRate&#xa;&#xa;Routing:&#xa;• Group by severity&#xa;• Deduplication&#xa;• Throttling" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;fontSize=9;fontStyle=1;strokeWidth=2;align=left;" vertex="1" parent="1">
+          <mxGeometry x="850" y="690" width="250" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="prometheus-to-alertmanager" value="Fire&#xa;alerts" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CC0000;fontSize=9;" edge="1" parent="1" source="prometheus" target="alertmanager">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="700" as="sourcePoint" />
+            <mxPoint x="950" y="650" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="email" value="Email&#xa;Notifications&#xa;&#xa;Severity Levels:&#xa;• Critical&#xa;• High&#xa;• Warning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="720" width="150" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="alertmanager-to-email" value="Send" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CC0000;fontSize=9;" edge="1" parent="1" source="alertmanager" target="email">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1100" y="800" as="sourcePoint" />
+            <mxPoint x="1150" y="750" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="regional-note" value="REGIONAL DEPLOYMENT&#xa;&#xa;Per Region (US-Ohio, UK-London):&#xa;• OTel Collectors (DaemonSet)&#xa;• Prometheus instance&#xa;• Filebeat sidecars&#xa;&#xa;Global/Centralized:&#xa;• Grafana Cloud&#xa;• Elasticsearch&#xa;• Kibana&#xa;• Instana Backend" style="text;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="650" width="260" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="instana-dashboards" value="Instana Dashboards&#xa;&#xa;• Service dependency map&#xa;• Call traces&#xa;• Latency breakdown&#xa;• Error rates by endpoint&#xa;• Infrastructure health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="320" width="180" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="instana-to-dashboards" value="Visualize" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#9900CC;fontSize=9;dashed=1;" edge="1" parent="1" source="instana-backend" target="instana-dashboards">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1450" y="350" as="sourcePoint" />
+            <mxPoint x="1500" y="300" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="red-metrics-detail" value="RED Metrics Details&#xa;&#xa;fraud_switch.fraud_router.requests_total&#xa;fraud_switch.fraud_router.errors_total&#xa;fraud_switch.fraud_router.request_duration_seconds&#xa;&#xa;fraud_switch.fraud_router.provider_calls_total&#xa;fraud_switch.tokenization.dek_rotations_total&#xa;fraud_switch.kafka.consumer_lag" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontSize=9;fontStyle=1;strokeWidth=2;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="480" width="200" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grafana-to-red" value="Display" style="endArrow=classic;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#0066CC;fontSize=9;dashed=1;" edge="1" parent="1" source="grafana-cloud" target="red-metrics-detail">
+          <mxGeometry x="0.1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="600" as="sourcePoint" />
+            <mxPoint x="1370" y="550" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,82 @@
+package com.wp.fd.fraudrouter.service;
+
+import com.wp.fd.metrics.common.KafkaMetrics;
+import com.wp.fd.metrics.core.MetricLabels;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
+
+/**
+ * Example Kafka producer with automatic metrics.
+ */
+@Service
+@Slf4j
+public class EventPublisher {
+    
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+    
+    @Autowired
+    private KafkaMetrics kafkaMetrics;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
+    
+    private static final String ASYNC_EVENTS_TOPIC = "async.events";
+    
+    /**
+     * Publish event to Kafka with metrics
+     */
+    public void publishFraudEvent(FraudEvent event) {
+        
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // Serialize event
+            String payload = objectMapper.writeValueAsString(event);
+            
+            // Send to Kafka
+            CompletableFuture<SendResult<String, String>> future = 
+                kafkaTemplate.send(ASYNC_EVENTS_TOPIC, event.getTransactionId(), payload);
+            
+            // Record success metric
+            future.whenComplete((result, ex) -> {
+                long duration = System.currentTimeMillis() - startTime;
+                
+                if (ex == null) {
+                    int partition = result.getRecordMetadata().getPartition();
+                    
+                    kafkaMetrics.recordPublish(
+                        ASYNC_EVENTS_TOPIC,
+                        partition,
+                        duration
+                    );
+                    
+                    log.debug("Published event to Kafka: topic={}, partition={}, duration={}ms",
+                             ASYNC_EVENTS_TOPIC, partition, duration);
+                } else {
+                    kafkaMetrics.recordPublishError(
+                        ASYNC_EVENTS_TOPIC,
+                        ex.getClass().getSimpleName()
+                    );
+                    
+                    log.error("Failed to publish event to Kafka", ex);
+                }
+            });
+            
+        } catch (Exception e) {
+            kafkaMetrics.recordPublishError(
+                ASYNC_EVENTS_TOPIC,
+                e.getClass().getSimpleName()
+            );
+            
+            log.error("Error publishing event", e);
+            throw new RuntimeException("Failed to publish event", e);
+        }
+    }
+}

@@ -1,0 +1,96 @@
+package com.wp.fd.fraudrouter.interceptor;
+
+import com.wp.fd.metrics.common.RequestMetrics;
+import com.wp.fd.metrics.core.MetricLabels;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+/**
+ * HTTP interceptor that automatically records metrics for all REST API calls.
+ * 
+ * Captures:
+ * - HTTP method (GET, POST, etc.)
+ * - Endpoint path
+ * - Response status
+ * - Request duration
+ */
+@Component
+@Slf4j
+public class MetricsInterceptor implements HandlerInterceptor {
+    
+    @Autowired
+    private RequestMetrics requestMetrics;
+    
+    private static final String START_TIME_ATTRIBUTE = "metrics.startTime";
+    
+    @Override
+    public boolean preHandle(HttpServletRequest request, 
+                            HttpServletResponse response, 
+                            Object handler) {
+        
+        // Record start time
+        request.setAttribute(START_TIME_ATTRIBUTE, System.currentTimeMillis());
+        return true;
+    }
+    
+    @Override
+    public void afterCompletion(HttpServletRequest request, 
+                               HttpServletResponse response, 
+                               Object handler, 
+                               Exception ex) {
+        
+        Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
+        if (startTime == null) {
+            return;
+        }
+        
+        long duration = System.currentTimeMillis() - startTime;
+        String method = request.getMethod();
+        String path = request.getRequestURI();
+        int statusCode = response.getStatus();
+        
+        // Normalize path (remove IDs, UUIDs, etc.)
+        String normalizedPath = normalizePath(path);
+        
+        if (statusCode >= 200 && statusCode < 400) {
+            // Success
+            requestMetrics.recordRequest(
+                duration,
+                "http_method", method,
+                "endpoint", normalizedPath,
+                "status_code", String.valueOf(statusCode)
+            );
+            
+        } else {
+            // Error (4xx or 5xx)
+            requestMetrics.recordError(
+                duration,
+                "HTTP_" + statusCode,
+                "http_method", method,
+                "endpoint", normalizedPath,
+                "status_code", String.valueOf(statusCode)
+            );
+        }
+        
+        log.debug("Recorded HTTP metric: {} {} - {}ms - status {}", 
+                 method, normalizedPath, duration, statusCode);
+    }
+    
+    /**
+     * Normalize path by replacing IDs and UUIDs with placeholders
+     * Example: /api/users/12345 -> /api/users/{id}
+     */
+    private String normalizePath(String path) {
+        // Replace numeric IDs
+        path = path.replaceAll("/\\d+", "/{id}");
+        
+        // Replace UUIDs
+        path = path.replaceAll("/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", "/{uuid}");
+        
+        return path;
+    }
+}

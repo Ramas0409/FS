@@ -1,0 +1,36 @@
+package com.wp.fd.fraudrouter.interceptor;
+
+import com.wp.fd.metrics.common.KafkaMetrics;
+import com.wp.fd.metrics.core.MetricLabels;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.listener.MessageListener;
+import org.springframework.kafka.listener.RecordInterceptor;
+import org.springframework.stereotype.Component;
+
+/**
+ * Kafka interceptor that automatically records metrics for consumed messages.
+ */
+@Component
+@Slf4j
+public class KafkaMetricsInterceptor implements RecordInterceptor<String, String> {
+    
+    @Autowired
+    private KafkaMetrics kafkaMetrics;
+    
+    @Override
+    public ConsumerRecord<String, String> intercept(ConsumerRecord<String, String> record) {
+        
+        // Record consumption metric
+        kafkaMetrics.recordConsume(
+            record.topic(),
+            record.partition()
+        );
+        
+        log.debug("Recorded Kafka consume metric: topic={}, partition={}, offset={}", 
+                 record.topic(), record.partition(), record.offset());
+        
+        return record;
+    }
+}

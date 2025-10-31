@@ -1,0 +1,50 @@
+# Default configuration for Fraud Switch Metrics Library
+fraud-switch:
+  metrics:
+    enabled: true
+    # service-name: MUST be set by consuming service (fraud-router, rules-service, etc.)
+    # region: MUST be set by consuming service (us-ohio-1, uk-london-1)
+    environment: prod
+    
+    cardinality:
+      enforcement-enabled: true
+      max-labels-per-metric: 1000
+      max-values-per-label: 100
+      check-interval: PT1M  # 1 minute
+      action: LOG  # LOG, DROP, CIRCUIT_BREAK
+    
+    histogram:
+      default-buckets: [10, 25, 50, 75, 100, 150, 200, 300, 500, 1000, 2000]
+      buckets:
+        fraud-router: [10, 25, 50, 75, 100, 150, 200]  # p99 < 100ms target
+        rules-service: [5, 10, 20, 30, 50, 75, 100]    # Fast service
+        bin-lookup-service: [5, 10, 20, 30, 50, 75, 100]
+        fraudsight-adapter: [25, 50, 75, 100, 150, 200]  # p99 < 100ms
+        guaranteed-payment-adapter: [50, 100, 200, 300, 350, 500]  # p99 < 350ms
+        async-processor: [100, 250, 500, 1000, 2000]    # Async, less critical
+        tokenization-service: [10, 25, 50, 75, 100]
+        issuer-data-service: [100, 500, 1000, 2000, 5000]  # Batch processing
+    
+    sampling:
+      enabled: false
+      histogram-sample-rate: 1.0
+      high-cardinality-sample-rate: 1.0
+    
+    circuit-breaker:
+      enabled: true
+      failure-threshold: 5
+      open-duration: PT5M  # 5 minutes
+      half-open-duration: PT1M  # 1 minute
+
+# Spring Boot Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}

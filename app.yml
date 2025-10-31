@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: fraud-router
+
+# Fraud Switch Metrics Configuration
+fraud-switch:
+  metrics:
+    enabled: true
+    service-name: fraud-router
+    region: uk-london-1
+    environment: production
+    cardinality:
+      enforcement-enabled: true
+      max-label-values-per-metric: 100
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.wp.fd: INFO
+    com.wp.fd.metrics: DEBUG
